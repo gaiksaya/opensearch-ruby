@@ -19,7 +19,7 @@ jobs:
         with:
           ruby-version: 3.1
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@8eba69932f928f2bc1b9837d16a095e7e1cb0845
         with:
           role-to-assume: ${{ secrets.SECRETS_ROLE }}
           aws-region: us-east-1
