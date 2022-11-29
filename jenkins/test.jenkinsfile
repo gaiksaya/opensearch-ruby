@@ -20,14 +20,15 @@ pipeline {
                                     returnStdout: true
                                 )
                                 String assetUrl = null
+                                sh "cat ${assets}"
                                 def parsedJson = readJSON text: assets
                                 def assetName = 'artifacts.tar.gz'
-                                sh "cat ${parsedJson}"
                                 parsedJson.each { item ->
                                     if(item.name == assetName) {
                                         assetUrl = item.url
-                                        }
+                                        sh "cat ${assetUrl}"
                                     }
+                                }
                                 echo "Downloading artifacts from $assetUrl"
                                 sh "curl -J -L -H 'Accept: application/octet-stream' -H 'Authorization: Bearer ${GITHUB_TOKEN}' ${assetUrl} | tar -xzv"
                             }
@@ -42,4 +43,4 @@ pipeline {
                 }
             }
         }
-    }
+}
