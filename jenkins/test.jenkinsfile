@@ -25,6 +25,7 @@ pipeline {
                                 parsedJson.each { item ->
                                     if(item.name == assetName) {
                                         assetUrl = item.url
+                                        echo "${assetUrl}"
                                     }
                                 }
                                 echo "Downloading artifacts from $assetUrl"
