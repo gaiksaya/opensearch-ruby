@@ -21,7 +21,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: ${{ secrets.SECRET_ROLE }}
+          role-to-assume: ${{ secrets.SECRETS_ROLE }}
           aws-region: us-east-1
       - name: Download signing key
         run: | 
