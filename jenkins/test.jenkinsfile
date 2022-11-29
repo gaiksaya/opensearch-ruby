@@ -20,7 +20,6 @@ pipeline {
                                     returnStdout: true
                                 )
                                 String assetUrl = null
-                                sh "cat ${assets}"
                                 def parsedJson = readJSON text: assets
                                 def assetName = 'artifacts.tar.gz'
                                 parsedJson.each { item ->
