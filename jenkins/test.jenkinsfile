@@ -1,0 +1,45 @@
+pipeline {
+        agent
+        {
+            docker {
+                label args.overrideAgent ?: 'Jenkins-Agent-AL2-X64-C54xlarge-Docker-Host'
+                image args.overrideDockerImage ?: 'opensearchstaging/ci-runner:release-centos7-clients-v1'
+                alwaysPull true
+            }
+        }
+        options {
+            timeout(time: 1, unit: 'HOURS')
+        }
+        stages {
+            stage('Download artifacts') {
+                steps {
+                    script {
+                            withCredentials([usernamePassword(credentialsId: 'jenkins-github-bot-token', usernameVariable: 'GITHUB_USER', passwordVariable: 'GITHUB_TOKEN')]) {
+                                String assets = sh(
+                                    script: "curl -H 'Accept: application/vnd.github+json' -H 'Authorization: Bearer ${GITHUB_TOKEN}' https://api.github.com/repos/opensearch-project/opensearch-ruby/releases/84508973/assets",
+                                    returnStdout: true
+                                )
+                                String assetUrl = null
+                                def parsedJson = readJSON text: assets
+                                def assetName = 'artifacts.tar.gz'
+                                sh "cat ${parsedJson}"
+                                parsedJson.each { item ->
+                                    if(item.name == assetName) {
+                                        assetUrl = item.url
+                                        }
+                                    }
+                                echo "Downloading artifacts from $assetUrl"
+                                sh "curl -J -L -H 'Accept: application/octet-stream' -H 'Authorization: Bearer ${GITHUB_TOKEN}' ${assetUrl} | tar -xzv"
+                            }
+                    }
+                }
+            }
+            stage('Release') {
+                steps {
+                    script {
+                        echo 'done'
+                    }
+                }
+            }
+        }
+    }
