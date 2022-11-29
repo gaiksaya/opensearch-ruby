@@ -3,14 +3,14 @@ name: Draft Release
 on:
   push:
     tags:
-      - "*"
+      - "*/*"
 
 jobs:
   draft_release:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      contents: read
+      contents: write
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
