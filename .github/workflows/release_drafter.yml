@@ -23,9 +23,10 @@ jobs:
         with:
           role-to-assume: ${{ secrets.SECRETS_ROLE }}
           aws-region: us-east-1
-      # - name: Download signing key
-      #   run: | 
-      #     aws secretsmanager get-secret-value --secret-id jenkins-opensearchproject-rubygems-private-key --query SecretString --output text > gem-private_key.pem
+      - name: Download signing key
+        run: | 
+          aws secretsmanager get-secret-value --secret-id jenkins-opensearchproject-rubygems-private-key --query SecretString --output text > gem-private_key.pem
+          ls -l
       - name: Build and package gem artifact
         run: . release/build.sh $(echo ${{ github.ref_name }} | awk -F/ '{print $1}')
       - name: Draft a release
