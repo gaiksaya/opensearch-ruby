@@ -23,7 +23,7 @@ jobs:
           approvers: ${{ steps.get_approvers.outputs.approvers }}
           minimum-approvals: 1
           issue-title: "Release ${{ github.ref_name }}"
-          issue-body: "Please approve or deny the release of ${{ github.ref_name }} **TAG**: ${{ github.ref_name }}  **COMMIT**: ${{ github.sha }}"
+          issue-body: "Please approve or deny the release **TAG**: ${{ github.ref_name }}  **COMMIT**: ${{ github.sha }}"
           # exclude-workflow-initiator-as-approver: true
       - name: Install Ruby
         uses: ruby/setup-ruby@v1
